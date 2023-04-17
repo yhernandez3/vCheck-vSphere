@@ -8,7 +8,7 @@ $PluginCategory = "vSphere"
 
 # Start of Settings
 # Please Specify the address (and optional port) of the vCenter server to connect to [servername(:port)]
-$Server = "192.168.0.0"
+$Server = "172.20.2.8"
 # Include SRM placeholder VMs in report?
 $IncludeSRMPlaceholders = $false
 # End of Settings

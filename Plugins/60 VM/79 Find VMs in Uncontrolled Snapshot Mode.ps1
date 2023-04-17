@@ -20,6 +20,7 @@ $PluginCategory = "vSphere"
 
 # Start of Settings
 $ExcludeDS = "ExcludeMe"
+# End of Settings= 
 # End of Settings
 
 $i=0;

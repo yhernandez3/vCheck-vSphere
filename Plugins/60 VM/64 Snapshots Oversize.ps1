@@ -9,7 +9,7 @@ $PluginCategory = "vSphere"
 # Start of Settings 
 # VMs not to report on (regex)
 $IgnoredVMs = "WEBMAIL"
-# End of Settings 
+# End of Settings
 
 $snapp = @()
 Foreach ($vmg in ($VM | Where-Object {$_.ExtensionData.Snapshot -and $_.Name -notmatch $IgnoredVMs})) {

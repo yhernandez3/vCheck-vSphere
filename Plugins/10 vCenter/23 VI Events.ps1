@@ -8,7 +8,7 @@ $PluginCategory = "vSphere"
 # Start of Settings 
 # Set the number of days of VC Events to check for errors
 $VCEventAge = 1
-# End of Settings 
+# End of Settings
 
 Get-VIEventPlus -Start ($Date).AddDays(-$VCEventAge ) -EventType Error | Select-Object @{N="Host";E={$_.host.name}}, createdTime, @{N="User";E={($_.userName.split("\"))[1]}}, fullFormattedMessage
 

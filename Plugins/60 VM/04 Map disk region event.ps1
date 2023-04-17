@@ -10,7 +10,7 @@ if([version]($global:DefaultVIServer.Version) -le [version]"5.0"){
     # Start of Settings 
     # Set the number of days to show Map disk region event for
     $eventAge = 5
-    # End of Settings 
+# End of Settings
     
     # Update settings where there is an override
     $eventAge = Get-vCheckSetting $Title "eventAge" $eventAge

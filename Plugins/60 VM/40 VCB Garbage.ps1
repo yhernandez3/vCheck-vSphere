@@ -10,7 +10,7 @@ $PluginCategory = "vSphere"
 # Start of Settings 
 # Names used in backup product snapshots. Defaults include VCB, Veeam, NetBackup, Commvault, and Rubrik
 $BackupNames = "VCB|Consolidate|veeam|NBU_SNAPSHOT|GX_BACKUP|RUBRIK"
-# End of Settings 
+# End of Settings
 
 $FullVM | Where-Object {$_.snapshot | Foreach-Object {$_.rootsnapshotlist | Where-Object {$_.name -match $BackupNames}}} | Sort-Object Name | Select-Object Name
 

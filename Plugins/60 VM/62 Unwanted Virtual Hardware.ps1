@@ -10,6 +10,7 @@ $PluginCategory = "vSphere"
 # Find unwanted virtual hardware
 $unwantedHardware = "VirtualUSBController|VirtualParallelPort|VirtualSerialPort"
 $ExcludeVM = "vm1|vm2"
+# End of Settings= VirtualUSBController|VirtualParallelPort|VirtualSerialPort
 # End of Settings
 
 # Update settings where there is an override
