@@ -24,7 +24,7 @@ foreach ($cluv in ($clusviews | Where-Object {$_.Summary.NumHosts -gt 0 } | Sort
     $clusterInfo.TotalMem = [math]::Round($totalMem, 2)
     $clusterInfo.CommittedCPU = $committedCpu
     $clusterInfo.CommittedMem = $committedMem
-    $clusterInfo.OverCommitmentRateCpu = [math]::Round($committedCpu / $totalCpu * 100, 2)
-    $clusterInfo.OverCommitmentRateMem = [math]::Round($committedMem / $totalMem * 100, 2)
+    $clusterInfo.OverCommitmentRateCpu = [math]::Round($committedCpu / $totalCpu, 2)
+    $clusterInfo.OverCommitmentRateMem = [math]::Round($committedMem / $totalMem, 2)
     $clusterInfo
 }
