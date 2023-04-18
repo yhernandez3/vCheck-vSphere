@@ -8,7 +8,7 @@ $PluginCategory = "vSphere"
 
 # Start of Settings
 # The NTP server which should be set on your hosts (comma-separated)
-$ntpserver = "pool.ntp.org,pool2.ntp.org"
+$ntpserver = "pool.ntp.org,pool2.ntp.org,ntp.midway.ovh"
 # End of Settings
 
 $VMH | Where-Object {$_.ConnectionState -match "Connected|Maintenance"} | Select-Object Name, @{N="NTPServer";E={($_ | Get-VMHostNtpServer) -join ","}}, @{N="ServiceRunning";E={(Get-VmHostService -VMHost $_ | Where-Object {$_.key -eq "ntpd"}).Running}} | Where-Object {$_.ServiceRunning -eq $false -or $_.NTPServer -ne $ntpserver}
