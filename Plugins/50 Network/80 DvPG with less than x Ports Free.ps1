@@ -12,7 +12,20 @@ $DvSwitchLeft = 10
 # Update settings where there is an override
 $DvSwitchLeft = Get-vCheckSetting $Title "DvSwitchLeft" $DvSwitchLeft
 
-if ((Get-PSSnapin VMware.VimAutomation.Vds -ErrorAction SilentlyContinue) -or (Get-Module VMware.VimAutomation.Vds -ErrorAction SilentlyContinue))
+$pssnapinPresent = $false
+
+try{
+    if(Get-PSSnapin VMware.VimAutomation.Vds -ErrorAction SilentlyContinue){
+        $pssnapinPresent = $true
+        if(!(Get-PSSnapin -Name $pcliCore -ErrorAction SilentlyContinue)){
+            Add-PSSnapin -Name $pcliCore
+        }
+    }
+} Catch{
+    Write-Output "Powershell is > 6.0 : Snapin are deprecated"
+}
+
+if ($pssnapinPresent -or (Get-Module VMware.VimAutomation.Vds -ErrorAction SilentlyContinue))
 {
    if ($vdspg = Get-VDSwitch | Sort-Object -Property Name | Get-VDPortgroup)
     {

@@ -41,9 +41,13 @@ if ($Revision) {
             else
             {
                 # Add required Snap-In
-                if (!(Get-PSSnapin -name VMware.VimAutomation.Vds -ErrorAction SilentlyContinue))
-                {
-                    Add-PSSnapin VMware.VimAutomation.Vds
+                try{
+                    if (!(Get-PSSnapin -name VMware.VimAutomation.Vds -ErrorAction SilentlyContinue))
+                    {
+                        Add-PSSnapin VMware.VimAutomation.Vds
+                    }
+                } catch{
+                    Write-Output "Powershell is > 6.0 : Snapin are deprecated"
                 }
             }
         }
