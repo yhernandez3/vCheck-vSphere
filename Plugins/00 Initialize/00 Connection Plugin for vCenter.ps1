@@ -131,13 +131,18 @@ switch ($platform.OSFamily) {
                 Import-Module -Name $pcliCore
             }
         }
-
-        if(Get-PSSnapin -Name $pcliCore -Registered -ErrorAction SilentlyContinue){
-            $pssnapinPresent = $true
-            if(!(Get-PSSnapin -Name $pcliCore -ErrorAction SilentlyContinue)){
-                Add-PSSnapin -Name $pcliCore
+        
+        try{
+            if(Get-PSSnapin -Name $pcliCore -Registered -ErrorAction SilentlyContinue){
+                $pssnapinPresent = $true
+                if(!(Get-PSSnapin -Name $pcliCore -ErrorAction SilentlyContinue)){
+                    Add-PSSnapin -Name $pcliCore
+                }
             }
+        } Catch{
+            Write-Output "Powershell is > 6.0 : Snapin are deprecated"
         }
+        
 
         if(!$pssnapinPresent -and !$psmodulePresent){
             Write-Error "Can't find PowerCLI. Is it installed?"
