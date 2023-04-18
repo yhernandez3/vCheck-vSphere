@@ -469,7 +469,7 @@ function Get-VIEventPlus {
       }
       if (-not $UseUTC)
       {
-         $events | % { $_.createdTime = $_.createdTime.ToLocalTime() }
+         $events | ForEach-Object { $_.createdTime = $_.createdTime.ToLocalTime() }
       }
       
       $events
@@ -511,7 +511,7 @@ PS> Get-FriendlyUnit -Value 123456,789123, 45678
     }
 
     process{
-        $Value | %{
+        $Value | ForEach-Object{
             if($_ -lt 0){
                 write-Error "Numbers must be positive."
                 break
@@ -613,7 +613,7 @@ PS> Get-Datastore | Get-HttpDatastoreItem -Credential $cred -Recurse
         if($Path -match "/$" -and $folderQualifier -notmatch "/$"){
             $folderQualifier += '/'
         }
-        $stack = Get-PSCallStack | Select -ExpandProperty Command
+        $stack = Get-PSCallStack | Select-Object -ExpandProperty Command
         if(($stack | Group-Object -AsHashTable -AsString)[$stack[0]].Count -eq 1){
             Write-Verbose "First call"
             $sDFile = @{
@@ -625,7 +625,7 @@ PS> Get-Datastore | Get-HttpDatastoreItem -Credential $cred -Recurse
                 Unit = $Unit.IsPresent
             }
             $allEntry = Get-HttpDatastoreItem @sDFile
-            $entry = $allEntry | where{$_.Name -match "^$($lastQualifier)/*$"}
+            $entry = $allEntry | Where-Object {$_.Name -match "^$($lastQualifier)/*$"}
             if($entry.Name -match "\/$"){
             # It's a folder
                 if($lastQualifier -notmatch "/$"){
@@ -659,7 +659,7 @@ PS> Get-Datastore | Get-HttpDatastoreItem -Credential $cred -Recurse
             }
             foreach($entry in $response){
                 $regEx.Matches($entry.Content) | 
-                Where{$_.Success -and $_.Groups['Filename'].Value -notmatch 'Parent Datacenter|Parent Directory'} | %{
+                Where-Object {$_.Success -and $_.Groups['Filename'].Value -notmatch 'Parent Datacenter|Parent Directory'} | ForEach-Object{
                     Write-Verbose "`tFound $($_.Groups['Filename'].Value)"
                     $fName = $_.Groups['Filename'].Value
                     $obj = [ordered]@{

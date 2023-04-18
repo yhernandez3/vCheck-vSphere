@@ -25,7 +25,7 @@ Import-LocalizedData -BaseDirectory ($ScriptPath + "\Lang") -BindingVariable pLa
 
 $OverCommit = @()
 $i = 0
-$VMHCount = $VMH | Measure
+$VMHCount = $VMH | Measure-Object
 Foreach ($VMHost in $VMH) {
    Write-Progress -ID 2 -Parent 1 -Activity $plang.pluginActivity -Status $VMHost.Name -PercentComplete ((100*$i)/$VMHCount.Count)
    if ($VMMem) { Clear-Variable VMMem }

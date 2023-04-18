@@ -806,7 +806,7 @@ param (
 $OldVcheckPluginsDir = (Get-ChildItem "$($OldVcheckDir)\Plugins").PsParentPath
 $NewVcheckPluginsDir = (Get-ChildItem "$($NewVcheckDir)\Plugins").PsParentPath
 
-$OldDisabled = Get-ChildItem $OldVcheckDir -Recurse | ? { $_ -like "*.disabled" } #| select -First 1
+$OldDisabled = Get-ChildItem $OldVcheckDir -Recurse | Where-Object { $_ -like "*.disabled" } #| select -First 1
 $OldDisabled
 
 foreach ($file in $OldDisabled) {
@@ -848,7 +848,7 @@ function Get-vCheckDisabledPlugins {
 
 param ( [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)] $vCheckDir )
 
-Get-ChildItem (Get-ChildItem "$($vCheckDir)\Plugins").PsParentPath -Recurse | ? { $_ -like "*.disabled" } #| select -First 1
+Get-ChildItem (Get-ChildItem "$($vCheckDir)\Plugins").PsParentPath -Recurse | Where-Object { $_ -like "*.disabled" } #| select -First 1
 
 <# Comment History
 20150128	cmonahan	Initial release.
@@ -926,7 +926,7 @@ mkdir $CurrentvCheckPath
 robocopy $NewvCheckSource $CurrentvCheckPath /s /e /z /xj /r:2 /w:5 /np 
 
 # Save variable settings
-Get-ChildItem -Path $OldvCheckPath -Filter *.ps1 -Recurse | % { Get-vCheckVariablesSettings -PluginFile $_.FullName } | Format-Table -AutoSize | Out-File -FilePath $OldvCheckVariables
+Get-ChildItem -Path $OldvCheckPath -Filter *.ps1 -Recurse | ForEach-Object { Get-vCheckVariablesSettings -PluginFile $_.FullName } | Format-Table -AutoSize | Out-File -FilePath $OldvCheckVariables
 
 # Make the disabled plugins match
 Sync-vCheckDisabledPlugins -OldVcheckDir $OldvCheckPath -NewVcheckDir $CurrentvCheckPath
@@ -972,7 +972,7 @@ Function Get-vCheckLogData {
 	}
 
 	# There is a sub table with the data - so get the TR that contains a sub table
-	$ParentTR = $xmlObj.table.tr | ? { $_.td.table }
+	$ParentTR = $xmlObj.table.tr | Where-Object { $_.td.table }
 	# Get the TD
 	$ParentTD = $ParentTR.td
 	# Get the table

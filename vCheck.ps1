@@ -796,7 +796,7 @@ if ($job) {
 		foreach ($PluginPath in ($jobConfig.vCheck.plugins.path -split ";")) {
 			if (Test-Path $PluginPath) {
 				$PluginPaths += (Get-Item $PluginPath).Fullname
-				$PluginPaths += Get-Childitem $PluginPath -Recurse | ?{ $_.PSIsContainer } | Select-Object -ExpandProperty FullName
+				$PluginPaths += Get-Childitem $PluginPath -Recurse | Where-Object{ $_.PSIsContainer } | Select-Object -ExpandProperty FullName
 			} else {
 				$PluginPaths += $ScriptPath + "\Plugins"
 				Write-Warning ($lang.pluginpathInvalid -f $PluginPath, ($ScriptPath + "\Plugins"))
@@ -829,7 +829,7 @@ if ($job) {
 	$ToNatural = { [regex]::Replace($_, '\d+', { $args[0].Value.PadLeft(20) }) }
 	$vCheckPlugins = @(Get-ChildItem -Path $PluginsFolder -filter "*.ps1" -Recurse | Where-Object { $_.Directory -match "initialize" } | Sort-Object $ToNatural)
 	$PluginsSubFolder = Get-ChildItem -Path $PluginsFolder | Where-Object { ($_.PSIsContainer) -and ($_.Name -notmatch "initialize") -and ($_.Name -notmatch "finish") }
-	$vCheckPlugins += $PluginsSubFolder | % { Get-ChildItem -Path $_.FullName -filter "*.ps1" | Sort-Object $ToNatural }
+	$vCheckPlugins += $PluginsSubFolder | ForEach-Object { Get-ChildItem -Path $_.FullName -filter "*.ps1" | Sort-Object $ToNatural }
 	$vCheckPlugins += Get-ChildItem -Path $PluginsFolder -filter "*.ps1" -Recurse | Where-Object { $_.Directory -match "finish" } | Sort-Object $ToNatural
 	$GlobalVariables = $ScriptPath + "\GlobalVariables.ps1"
 }
@@ -927,7 +927,7 @@ if (-not $GUIConfig) {
 
 	# Loop over all enabled plugins
 	$p = 0
-	$vCheckPlugins | Foreach {
+	$vCheckPlugins | ForEach-Object {
 		$TableFormat = $null
 		$PluginInfo = Get-PluginID $_.Fullname
 		$p++

@@ -7,7 +7,7 @@ $vSphereLicInfo = @()
 
 Foreach ($LicenseMan in Get-View ($ServiceInstance | Select-Object -First 1).Content.LicenseManager) 
 {
-   ($LicenseMan | Select-Object -ExpandProperty Licenses) | Where {$licenseEvals -or $_.Name -notmatch "Evaluation" } | Select-Object  @{Name="VC";e={([Uri]$LicenseMan.Client.ServiceUrl).Host}}, `
+   ($LicenseMan | Select-Object -ExpandProperty Licenses) | Where-Object {$licenseEvals -or $_.Name -notmatch "Evaluation" } | Select-Object  @{Name="VC";e={([Uri]$LicenseMan.Client.ServiceUrl).Host}}, `
       Name, LicenseKey, Total, Used, @{Name="Information";e={$_.Labels | Select-Object -ExpandProperty Value}}, `
       @{"Name"="ExpirationDate";e={$_.Properties | Where-Object { $_.key -eq "expirationDate" } | Select-Object -ExpandProperty Value}} 
 }

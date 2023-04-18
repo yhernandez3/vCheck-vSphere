@@ -33,7 +33,7 @@ if ($ShowHostAffinity)   { $Types += "VMHostAffinity"}
 # For each cluster
 ForEach ($DRSCluster in $Clusters) {
 	## Get the rules and apply exclusion filter
-	$myDRSRules = Get-DrsRule -Cluster $DRSCluster -Type $Types | Where { $_.Name -notmatch $excludeName }
+	$myDRSRules = Get-DrsRule -Cluster $DRSCluster -Type $Types | Where-Object { $_.Name -notmatch $excludeName }
 	## For each rule
 	ForEach ($myDRSRule in $myDRSRules) {
 		### Reset variables
@@ -48,16 +48,16 @@ ForEach ($DRSCluster in $Clusters) {
 			##### Get VM view
 			$myVMView = Get-View $myDRSRule.VMIDS
 			##### Get VM names
-			$myVMs = $myVMView | Select -ExpandProperty Name
+			$myVMs = $myVMView | Select-Object -ExpandProperty Name
 			##### Get Host currently running VM
-			$myRunningHost = (Get-View ($myVMView | %{$_.Runtime.Host}) | Select -ExpandProperty Name)
+			$myRunningHost = (Get-View ($myVMView | ForEach-Object{$_.Runtime.Host}) | Select-Object -ExpandProperty Name)
 		}
 		#### If a host affinity rule
 		If ($myDRSRuleType -eq "VMHostAffinity") {
 			##### If hosts are defined
 			If ($myDRSRule.AffineHostIds) {
 				###### Get host names
-				$myHosts = (Get-View $myDRSRule.AffineHostIds | Select -ExpandProperty Name)
+				$myHosts = (Get-View $myDRSRule.AffineHostIds | Select-Object -ExpandProperty Name)
 			}
 			##### If VMs and Hosts are defined
 			If (($myVMs) -and ($myHosts)) {
@@ -69,7 +69,7 @@ ForEach ($DRSCluster in $Clusters) {
 			$DRSRuleValid = $true
 		}
 		#### Add to output array
-		$DRSRules += @($myDRSRule | Select Cluster, Enabled, @{Name="Valid";Expression={$DRSRuleValid}}, Name, Type,
+		$DRSRules += @($myDRSRule | Select-Object Cluster, Enabled, @{Name="Valid";Expression={$DRSRuleValid}}, Name, Type,
 									@{Name="VM";Expression={$myVMs -join "<br />"}},
 									@{Name="Rule Host";Expression={$myHosts -join "<br />"}},
 									@{Name="Current Host";Expression={$myRunningHost -join "<br />"}})

@@ -12,7 +12,7 @@ $PluginCategory = "vSphere"
 # - VM Guest OS Pivot Table -
 
 $VMOSversions = @{ }
-$FullVM | % {
+$FullVM | ForEach-Object {
   # Prefer to use GuestFullName but try AltGuestName first
   if ($_.Config.AlternateGuestName) { $VMOSversion = $_.Config.AlternateGuestName }
   if ($_.Guest.GuestFullName) { $VMOSversion = $_.Guest.GuestFullName }
@@ -31,7 +31,7 @@ $FullVM | % {
 }
 
 $myCol = @()
-foreach ( $gosname in $VMOSversions.Keys | sort) {
+foreach ( $gosname in $VMOSversions.Keys | Sort-Object) {
   $MyDetails = "" | Select-Object OS, Count
   $MyDetails.OS = $gosname
   $MyDetails.Count = $VMOSversions.$gosname

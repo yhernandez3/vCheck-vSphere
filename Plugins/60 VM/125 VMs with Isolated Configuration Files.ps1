@@ -13,7 +13,7 @@ Foreach ($CHKVM in $FullVM)
 {
    $vmxDatastore = (($CHKVM.Summary.Config.VmPathName).Split(']')[0].TrimStart('['))
    $vmdkDatastores = @()
-   $CHKVM.Config.Hardware.Device | % {
+   $CHKVM.Config.Hardware.Device | ForEach-Object {
       If ($_.Backing.Filename -ne $null) 
       {
          $vmdkDatastores += ($_.Backing.Filename).Split(']')[0].TrimStart('[')

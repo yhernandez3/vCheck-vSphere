@@ -16,7 +16,7 @@ $VMTDoNotInclude = Get-vCheckSetting $Title "VMTDoNotInclude" $VMTDoNotInclude
 
 $FullVM | Where-Object {$_.Name -notmatch $VMTDoNotInclude} |
    Where-Object {$_.Config.ManagedBy.ExtensionKey -ne 'com.vmware.vcDr'} |
-   Select-Object -Property Name,@{N="NrOfHardDisks";E={($_.Layout.Disk|measure).count}},@{N="NrOfGuestDisks";E={($_.Guest.Disk|measure).count}},@{N="GuestFamily";E={$_.Guest.GuestFamily}} |
+   Select-Object -Property Name,@{N="NrOfHardDisks";E={($_.Layout.Disk|Measure-Object).count}},@{N="NrOfGuestDisks";E={($_.Guest.Disk|Measure-Object).count}},@{N="GuestFamily";E={$_.Guest.GuestFamily}} |
    Where-Object {$_.GuestFamily -eq "windowsGuest" -and $_.NrOfHardDisks -lt $_.NrOfGuestDisks}
 
 # Change Log
