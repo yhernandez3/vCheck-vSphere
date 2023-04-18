@@ -8,13 +8,13 @@ $PluginCategory = "vSphere"
 # Start of Settings
 # Percentage threshold to warn?
 $vsanWarningThreshold = 50
+# Maximum magnetic disk per group (depends on vSAN version) ?
+$vsanMDMaximum = 7
 # End of Settings
 
 # Update settings where there is an override
 $vsanWarningThreshold = Get-vCheckSetting $Title "vsanWarningThreshold" $vsanWarningThreshold
 
-# This config maximum is different for each version of VSAN, 7 for 5.5
-$vsanMDMaximum = 7
 
 foreach ($cluster in $clusviews) {
    if($cluster.ConfigurationEx.VsanConfigInfo.Enabled) {

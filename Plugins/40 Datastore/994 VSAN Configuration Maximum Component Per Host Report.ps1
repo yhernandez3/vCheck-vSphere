@@ -8,13 +8,12 @@ $PluginCategory = "vSphere"
 # Start of Settings
 # Percentage threshold to warn?
 $vsanWarningThreshold = 50
+# Maximum nulber of components per host (depends on vSAN version) ?
+$vsanComponentMaximum = 3000
 # End of Settings
 
 # Update settings where there is an override
 $vsanWarningThreshold = Get-vCheckSetting $Title "vsanWarningThreshold" $vsanWarningThreshold
-
-# This config maximum is different for each version of VSAN, 3000 for 5.5
-$vsanComponentMaximum = 3000
 
 foreach ($cluster in $clusviews) {
    if($cluster.ConfigurationEx.VsanConfigInfo.Enabled) {
