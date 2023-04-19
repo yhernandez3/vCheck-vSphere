@@ -9,4 +9,23 @@ $PluginCategory = "vSphere"
 # Start of Settings
 # Find unwanted virtual hardware
 $unwantedHardware = "VirtualUSBController|VirtualParallelPort|VirtualSerialPort"
+# VMs to exclude from unwanted virtual hardware check
+$ExcludeVM = "vm1|vm2"
 # End of Settings
+
+# Update settings where there is an override
+$unwantedHardware = Get-vCheckSetting $Title "unwantedHardware" $unwantedHardware
+
+foreach ($vmguest in ($FullVM | Where-Object { $_.Name -notmatch $ExcludeVM })) {
+   $vmguest.Config.Hardware.Device | Where-Object {$_.GetType().Name -match $unwantedHardware} | Foreach-Object {
+      New-Object -TypeName PSObject -Property @{
+         Name = $vmguest.name 
+         Label = $_.DeviceInfo.Label
+      }
+   }
+}
+
+#Thanks to @lucd http://communities.vmware.com/message/1546618
+
+# Change Log
+## 1.2 : Added Get-vCheckSetting
