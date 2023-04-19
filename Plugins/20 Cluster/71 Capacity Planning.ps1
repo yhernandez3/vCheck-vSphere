@@ -9,9 +9,9 @@ $PluginCategory = "vSphere"
 
 # Start of Settings 
 # Max CPU usage for non HA cluster
-$limitResourceCPUClusNonHA = 0.6
+$limitResourceCPUClusNonHA = 0.7
 # Max MEM usage for non HA cluster
-$limitResourceMEMClusNonHA = 0.6
+$limitResourceMEMClusNonHA = 0.7
 # End of Settings
 
 # Update settings where there is an override
